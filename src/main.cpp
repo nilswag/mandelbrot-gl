@@ -1,9 +1,15 @@
 #include <iostream>
-#include <GLFW/glfw3.h>
+#include "application.h"
 
 int main(void)
 {
-	glfwInit();
-	std::cout << "Hello World!" << std::endl;
+	Application app(800, 800, "Mandelbrot");
+	if (!app.init())
+	{
+		std::cerr << "Unable to initialize application." << std::endl;
+		return EXIT_FAILURE;
+	}
+
+	app.run();
 	return 0;
 }
