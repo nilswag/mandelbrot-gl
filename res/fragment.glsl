@@ -6,8 +6,8 @@ out vec4 color;
  
 int getIterations()
 {
-    float real = (gl_FragCoord.x / 1080.0 - 0.5) * 4.0;
-    float imag = (gl_FragCoord.y / 1080.0 - 0.7) * 4.0;
+    float real = (gl_FragCoord.x / 1080.0 - 0.5) * 0.5 * 4.0;
+    float imag = (gl_FragCoord.y / 1080.0 - 0.7) * 0.5 * 4.0;
  
     int iterations = 0;
     float constReal = real;
