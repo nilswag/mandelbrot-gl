@@ -1,6 +1,7 @@
 #include <iostream>
 #include <glad/glad.h>
 #include "application.h"
+#include "shader.h"
 
 Application::~Application(void)
 {
@@ -44,12 +45,45 @@ bool Application::init(void)
 
 void Application::run(void)
 {
+	float vertices[] = {
+		-1.0f, -1.0f, 0.0f,
+		-1.0f,  1.0f, 0.0f,
+		 1.0f, -1.0f, 0.0f,
+		 1.0f,  1.0f, 0.0f
+	};
+
+	unsigned int indices[] = {
+		0, 1, 2,
+		2, 1, 3
+	};
+
+	GLuint vao;
+	glGenVertexArrays(1, &vao);
+	glBindVertexArray(vao);
+
+	GLuint bos[2];
+	glGenBuffers(2, bos);
+	glBindBuffer(GL_ARRAY_BUFFER, bos[0]);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bos[1]);
+
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, nullptr);
+	glEnableVertexAttribArray(0);
+
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+	Shader shader("res/vertex.glsl", "res/fragment.glsl");
+	shader.use();
+
 	while (!glfwWindowShouldClose(window))
 	{
 		glfwPollEvents();
 
 		glClear(GL_COLOR_BUFFER_BIT);
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
 		glfwSwapBuffers(window);
 	}
 }
